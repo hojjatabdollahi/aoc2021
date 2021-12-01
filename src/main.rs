@@ -16,8 +16,8 @@ fn main() {
              .into_iter()
              .filter(|str| !str.parse::<i32>().is_err())
              .map(|str| str.parse::<i32>().unwrap())
-             .fold((0,None), |counter, x| 
-                  match counter {
+             .fold((0,None), |acc, x| 
+                  match acc {
                       (counter, Some(value)) if value < x => (counter+1, Some(x)), // increase
                       (_, None) => (0, Some(x)), // happens for first item
                       (counter, _) => (counter, Some(x)), // don't increase
