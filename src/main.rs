@@ -27,7 +27,7 @@ fn main() {
                   match acc {
                       (counter, Some(a), Some(b), Some(c)) if a < x => (counter+1, Some(b), Some(c), Some(x)), // increase
                       (_, None, b, c) => (0, b, c, Some(x)), // happens for first item
-                      (counter, a, b, c) => (counter, b, c, Some(x)), // don't increase
+                      (counter, _, b, c) => (counter, b, c, Some(x)), // don't increase
                   }
                 ).0);
     
