@@ -21,6 +21,7 @@ fn parse(line: &str) -> Direction {
 
 fn main() {
     
+    // part 1
     let output = fs::read_to_string("input").expect("Couldn't read the input")
         .lines()
         .map(|line| {
@@ -31,6 +32,21 @@ fn main() {
                 Direction::Forward(x) => {(acc.0 + x, acc.1)},
                 Direction::Up(y) => {(acc.0, acc.1 - y)},
                 Direction::Down(y) => {(acc.0, acc.1 + y)},
+            }
+        });
+    dbg!(output.0*output.1);
+
+    // part 2
+    let output = fs::read_to_string("input").expect("Couldn't read the input")
+        .lines()
+        .map(|line| {
+            parse(line)
+        })
+        .fold((/* horizontal: */ 0, /* depth: */ 0, /* aim: */ 0 ), |acc, dir| {
+            match dir {
+                Direction::Forward(x) => {(acc.0 + x, acc.1 + acc.2*x, acc.2)},
+                Direction::Up(x) => {(acc.0, acc.1, acc.2 - x)},
+                Direction::Down(x) => {(acc.0, acc.1, acc.2 + x)},
             }
         });
     dbg!(output.0*output.1);
