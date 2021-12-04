@@ -8,14 +8,14 @@ enum Direction {
 }
 
 fn parse(line: &str) -> Direction {
-    let dir = line.split(' ').nth(0).unwrap();
+    let dir = line.split(' ').next().unwrap();
     let amount = line.split(' ').nth(1).unwrap().parse::<i32>().unwrap();
     if dir.starts_with("forward") {
-        return Direction::Forward(amount);
+        Direction::Forward(amount)
     } else if line.starts_with("up") {
-        return Direction::Up(amount);
+        Direction::Up(amount)
     } else {
-        return Direction::Down(amount);
+        Direction::Down(amount)
     }
 }
 
