@@ -4,7 +4,7 @@ enum CaveType {
     Small,
     Big,
 }
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 enum Status {
     Seen,
     NotSeen,
@@ -18,9 +18,17 @@ impl Caves {
         self.caves.iter().position(|c| c.0.as_str() == input)
     }
 
-    fn get(&self, id: ID) -> Option<(String, CaveType)> {
+    fn copy(&self, id: ID) -> (String, CaveType, Status) {
+        (
+            self.caves[id].0.clone(),
+            self.caves[id].1.to_owned(),
+            self.caves[id].2.to_owned(),
+        )
+    }
+
+    fn get(&self, id: ID) -> Option<(String, CaveType, Status)> {
         if id < self.caves.len() {
-            Some((self.caves[id].0.clone(), self.caves[id].1.clone()))
+            Some(self.copy(id))
         } else {
             None
         }
@@ -57,12 +65,14 @@ impl Caves {
 struct CavesConnection {
     caves: Caves,
     connections: Vec<(ID, Vec<ID>)>,
+    answers: Vec<Vec<usize>>,
 }
 impl CavesConnection {
     fn new() -> Self {
         Self {
             caves: Caves::new(),
             connections: Vec::new(),
+            answers: Vec::new(),
         }
     }
 
@@ -102,6 +112,22 @@ fn process1(input: &str) -> usize {
     for line in input.lines() {
         con.push(line);
     }
+    // let answers = Vec::new();
+    println!("{:?}", con.caves);
+    let start_id = con.caves.find("start").unwrap();
+    let mut to_test = con
+        .connections
+        .into_iter()
+        .filter(|c| c.0 == start_id)
+        .map(|c| c.1)
+        .collect::<Vec<_>>();
+    loop
+    {
+
+        if to_test.len() == 0 {
+            break;
+        }
+    }
     0
 }
 fn main() {
@@ -114,7 +140,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    // #[test]
+
+    #[test]
     fn test_adding_caves() {
         let mut a = Caves::new();
         a.push("start");
@@ -125,7 +152,7 @@ mod tests {
         assert_eq!(2, a.len());
     }
 
-    // #[test]
+    #[test]
     fn test_finding_caves() {
         let mut a = Caves::new();
         a.push("start");
@@ -148,7 +175,7 @@ mod tests {
         assert_eq!(3, a.len());
     }
 
-    // #[test]
+    #[test]
     fn part1_1() {
         let input = r#"start-A
 start-b
