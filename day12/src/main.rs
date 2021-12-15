@@ -121,8 +121,11 @@ fn process1(input: &str) -> usize {
         .filter(|c| c.0 == start_id)
         .map(|c| c.1)
         .collect::<Vec<_>>();
-    loop
-    {
+    loop {
+        match to_test.pop() {
+            Some(x) => {}
+            None => {}
+        }
 
         if to_test.len() == 0 {
             break;
